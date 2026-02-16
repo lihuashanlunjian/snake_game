@@ -56,8 +56,8 @@
 1. **克隆项目**
 
 ```bash
-git clone https://github.com/your-username/snake-game.git
-cd snake-game
+git clone https://github.com/lihuashanlunjian/snake_game.git
+cd snake_game
 ```
 
 2. **创建虚拟环境（推荐）**
@@ -140,7 +140,7 @@ app.run(
 ## 📁 项目结构
 
 ```
-snake-game/
+snake_game/
 ├── app.py                    # Flask 后端服务器
 ├── requirements.txt          # Python 依赖
 ├── highscore.json           # 最高分存储文件（自动生成）
