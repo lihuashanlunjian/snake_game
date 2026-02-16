@@ -1,0 +1,572 @@
+/**
+ * @file    style.css
+ * @brief   贪吃蛇游戏样式表
+ * @details 响应式设计，支持不同设备屏幕
+ * @author  AI Assistant
+ * @date    2026-02-16
+ * @version V1.0.0
+ */
+
+/* 全局样式重置 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* 页面主体样式 */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    min-height: 100vh;
+    color: #ffffff;
+}
+
+/* 游戏容器 */
+.game-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* 游戏头部 */
+.game-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* 游戏标题 */
+.game-header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+    text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+}
+
+/* 分数面板 */
+.score-board {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+}
+
+/* 分数项 */
+.score-item {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 15px 30px;
+    border-radius: 10px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* 分数标签 */
+.score-label {
+    display: block;
+    font-size: 0.9rem;
+    color: #aaa;
+    margin-bottom: 5px;
+}
+
+/* 分数值 */
+.score-value {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #00ff88;
+}
+
+/* 游戏主体区域 */
+.game-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Canvas包装器 */
+.canvas-wrapper {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+/* 游戏画布 */
+#game-canvas {
+    display: block;
+    background: #0a0a0a;
+    border: 3px solid #00ff88;
+    border-radius: 10px;
+    box-shadow: 0 0 30px rgba(0, 255, 136, 0.3);
+}
+
+/* 游戏覆盖层（开始/结束状态） */
+.game-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    transition: opacity 0.3s ease;
+}
+
+/* 隐藏覆盖层 */
+.game-overlay.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* 覆盖层内容 */
+.overlay-content {
+    text-align: center;
+}
+
+/* 覆盖层标题 */
+.overlay-content h2 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+    color: #00ff88;
+}
+
+/* 覆盖层消息 */
+.overlay-content p {
+    font-size: 1.1rem;
+    color: #ccc;
+}
+
+/* ==================== 暂停菜单样式 ==================== */
+
+/* 暂停菜单容器 */
+.pause-menu {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    z-index: 100;
+    animation: fadeIn 0.3s ease;
+}
+
+/* 隐藏暂停菜单 */
+.pause-menu.hidden {
+    display: none;
+}
+
+/* 暂停菜单内容 */
+.pause-menu-content {
+    background: linear-gradient(145deg, #1e2a3a, #0d1520);
+    padding: 30px 40px;
+    border-radius: 20px;
+    border: 2px solid #00ff88;
+    box-shadow: 0 0 40px rgba(0, 255, 136, 0.3);
+    text-align: center;
+    min-width: 300px;
+    animation: scaleIn 0.3s ease;
+}
+
+/* 暂停菜单标题 */
+.pause-title {
+    font-size: 2rem;
+    color: #00ff88;
+    margin-bottom: 25px;
+    text-shadow: 0 0 15px rgba(0, 255, 136, 0.5);
+}
+
+/* 暂停菜单统计信息容器 */
+.pause-stats {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 25px;
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+}
+
+/* 暂停菜单统计项 */
+.pause-stat-item {
+    text-align: center;
+}
+
+/* 暂停菜单统计标签 */
+.pause-stat-label {
+    display: block;
+    font-size: 0.85rem;
+    color: #888;
+    margin-bottom: 5px;
+}
+
+/* 暂停菜单统计值 */
+.pause-stat-value {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #00ff88;
+}
+
+/* 暂停菜单按钮容器 */
+.pause-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+/* 暂停菜单按钮 */
+.pause-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 14px 25px;
+    font-size: 1rem;
+}
+
+/* 按钮图标 */
+.btn-icon {
+    font-size: 1.2rem;
+}
+
+/* 暂停提示 */
+.pause-hint {
+    padding-top: 15px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* 暂停提示文字 */
+.pause-hint p {
+    font-size: 0.9rem;
+    color: #888;
+}
+
+/* 暂停提示键盘样式 */
+.pause-hint kbd {
+    background: #333;
+    padding: 3px 8px;
+    border-radius: 4px;
+    border: 1px solid #555;
+    font-family: monospace;
+    color: #00ff88;
+}
+
+/* 缩放动画 */
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* ==================== 控制按钮样式 ==================== */
+
+/* 控制按钮容器 */
+.controls {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+/* 通用按钮样式 */
+.btn {
+    padding: 12px 30px;
+    font-size: 1rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* 禁用按钮样式 */
+.btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* 主要按钮 */
+.btn-primary {
+    background: linear-gradient(135deg, #00ff88, #00cc6a);
+    color: #000;
+}
+
+/* 主要按钮悬停效果 */
+.btn-primary:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 20px rgba(0, 255, 136, 0.4);
+}
+
+/* 次要按钮 */
+.btn-secondary {
+    background: linear-gradient(135deg, #4a90d9, #357abd);
+    color: #fff;
+}
+
+/* 次要按钮悬停效果 */
+.btn-secondary:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 20px rgba(74, 144, 217, 0.4);
+}
+
+/* 警告按钮 */
+.btn-warning {
+    background: linear-gradient(135deg, #ff9500, #ff6b00);
+    color: #fff;
+}
+
+/* 警告按钮悬停效果 */
+.btn-warning:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 20px rgba(255, 149, 0, 0.4);
+}
+
+/* ==================== 移动端控制样式 ==================== */
+
+/* 移动端控制容器 */
+.mobile-controls {
+    display: none;
+    margin-top: 20px;
+}
+
+/* 控制按钮行 */
+.control-row {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+/* 方向控制按钮 */
+.control-btn {
+    width: 60px;
+    height: 60px;
+    font-size: 1.5rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid #00ff88;
+    border-radius: 10px;
+    color: #00ff88;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+/* 方向控制按钮按下效果 */
+.control-btn:active {
+    background: #00ff88;
+    color: #000;
+    transform: scale(0.95);
+}
+
+/* ==================== 页脚样式 ==================== */
+
+/* 游戏页脚 */
+.game-footer {
+    margin-top: auto;
+    padding-top: 20px;
+}
+
+/* 游戏说明 */
+.instructions {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* 游戏说明标题 */
+.instructions h3 {
+    margin-bottom: 15px;
+    color: #00ff88;
+}
+
+/* 游戏说明列表 */
+.instructions ul {
+    list-style: none;
+}
+
+/* 游戏说明列表项 */
+.instructions li {
+    padding: 8px 0;
+    color: #ccc;
+}
+
+/* 键盘按键样式 */
+.instructions kbd {
+    background: #333;
+    padding: 4px 8px;
+    border-radius: 4px;
+    border: 1px solid #555;
+    font-family: monospace;
+    color: #00ff88;
+}
+
+/* ==================== 响应式设计 ==================== */
+
+/* 平板设备适配 */
+@media (max-width: 768px) {
+    .game-container {
+        padding: 10px;
+    }
+    
+    .game-header h1 {
+        font-size: 1.8rem;
+    }
+    
+    .score-board {
+        gap: 20px;
+    }
+    
+    .score-item {
+        padding: 10px 20px;
+    }
+    
+    .score-value {
+        font-size: 1.5rem;
+    }
+    
+    .btn {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+    }
+    
+    .mobile-controls {
+        display: block;
+    }
+    
+    .instructions {
+        padding: 15px;
+    }
+    
+    .instructions li {
+        font-size: 0.9rem;
+    }
+    
+    /* 暂停菜单平板适配 */
+    .pause-menu-content {
+        padding: 25px 30px;
+        min-width: 280px;
+    }
+    
+    .pause-title {
+        font-size: 1.6rem;
+    }
+    
+    .pause-stat-value {
+        font-size: 1.3rem;
+    }
+    
+    .pause-btn {
+        padding: 12px 20px;
+        font-size: 0.9rem;
+    }
+}
+
+/* 手机设备适配 */
+@media (max-width: 480px) {
+    .game-header h1 {
+        font-size: 1.5rem;
+    }
+    
+    .score-board {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .score-item {
+        width: 100%;
+        text-align: center;
+    }
+    
+    .controls {
+        flex-direction: column;
+        width: 100%;
+    }
+    
+    .btn {
+        width: 100%;
+    }
+    
+    .control-btn {
+        width: 50px;
+        height: 50px;
+        font-size: 1.2rem;
+    }
+    
+    /* 暂停菜单手机适配 */
+    .pause-menu-content {
+        padding: 20px;
+        min-width: 260px;
+        margin: 10px;
+    }
+    
+    .pause-title {
+        font-size: 1.4rem;
+        margin-bottom: 20px;
+    }
+    
+    .pause-stats {
+        flex-direction: column;
+        gap: 15px;
+        padding: 12px;
+    }
+    
+    .pause-stat-value {
+        font-size: 1.2rem;
+    }
+    
+    .pause-btn {
+        padding: 10px 15px;
+        font-size: 0.85rem;
+    }
+    
+    .pause-hint p {
+        font-size: 0.8rem;
+    }
+}
+
+/* ==================== 动画效果 ==================== */
+
+/* 脉冲动画 */
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+/* 分数动画 */
+.score-value.animate {
+    animation: pulse 0.3s ease;
+}
+
+/* 淡入动画 */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 覆盖层内容动画 */
+.overlay-content {
+    animation: fadeIn 0.5s ease;
+}
