@@ -448,12 +448,59 @@ body {
     color: #fff;
     text-transform: none;
     letter-spacing: 0;
+    transition: all 0.3s ease;
 }
 
-.btn-social:hover {
+.btn-social:hover:not(:disabled) {
     background: rgba(255, 255, 255, 0.1);
     border-color: rgba(255, 255, 255, 0.2);
     transform: translateY(-2px);
+}
+
+.btn-social:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+.btn-social:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.btn-social.btn-loading {
+    pointer-events: none;
+}
+
+.btn-wechat {
+    background: rgba(7, 193, 96, 0.15);
+    border-color: rgba(7, 193, 96, 0.3);
+}
+
+.btn-wechat:hover:not(:disabled) {
+    background: rgba(7, 193, 96, 0.25);
+    border-color: rgba(7, 193, 96, 0.5);
+    box-shadow: 0 5px 20px rgba(7, 193, 96, 0.3);
+}
+
+.btn-qq {
+    background: rgba(18, 183, 245, 0.15);
+    border-color: rgba(18, 183, 245, 0.3);
+}
+
+.btn-qq:hover:not(:disabled) {
+    background: rgba(18, 183, 245, 0.25);
+    border-color: rgba(18, 183, 245, 0.5);
+    box-shadow: 0 5px 20px rgba(18, 183, 245, 0.3);
+}
+
+.spinner-small {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
 }
 
 .social-icon {
@@ -733,4 +780,162 @@ body {
         flex-direction: column;
         text-align: center;
     }
+}
+
+.qrcode-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    animation: fadeIn 0.3s ease;
+}
+
+.qrcode-modal.hidden {
+    display: none;
+}
+
+.qrcode-content {
+    max-width: 400px;
+    text-align: center;
+}
+
+.qrcode-container {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
+
+.qrcode-image {
+    max-width: 200px;
+    width: 100%;
+    height: auto;
+}
+
+.qrcode-description {
+    color: #888;
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+}
+
+.qrcode-timer {
+    color: #00ff88;
+    font-size: 0.9rem;
+}
+
+#qrcode-countdown {
+    font-weight: bold;
+    color: #ffaa00;
+}
+
+.social-login-error {
+    background: rgba(255, 68, 68, 0.1);
+    border: 1px solid rgba(255, 68, 68, 0.3);
+    border-radius: 8px;
+    padding: 12px 15px;
+    margin-top: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    animation: fadeIn 0.3s ease;
+}
+
+.social-login-error.hidden {
+    display: none;
+}
+
+.social-login-error .error-icon {
+    font-size: 1.2rem;
+}
+
+.social-login-error .error-text {
+    color: #ff4444;
+    font-size: 0.9rem;
+}
+
+.config-guide-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 3000;
+    animation: fadeIn 0.3s ease;
+}
+
+.config-guide-modal.hidden {
+    display: none;
+}
+
+.config-guide-content {
+    max-width: 500px;
+    text-align: left;
+}
+
+.config-guide-message {
+    margin-bottom: 20px;
+}
+
+.config-guide-message p {
+    color: #ffaa00;
+    font-size: 0.95rem;
+}
+
+.config-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 25px;
+}
+
+.config-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 10px 15px;
+    background: rgba(0, 255, 136, 0.05);
+    border-radius: 8px;
+    border-left: 3px solid #00ff88;
+}
+
+.step-number {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    background: #00ff88;
+    color: #000;
+    border-radius: 50%;
+    font-weight: bold;
+    font-size: 0.85rem;
+    flex-shrink: 0;
+}
+
+.step-text {
+    color: #ccc;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+.config-guide-actions {
+    display: flex;
+    justify-content: center;
+}
+
+.config-link {
+    text-decoration: none;
+    padding: 12px 30px;
+}
+
+.config-link:hover {
+    color: #000;
 }

@@ -12,6 +12,7 @@ from functools import wraps
 from game.snake_game import SnakeGame
 from database import init_db
 from database.auth_service import AuthService, login_required
+from auth.social_config import SocialLoginService, WeChatConfig, QQConfig
 
 app = Flask(__name__)
 
@@ -223,6 +224,96 @@ def api_change_password():
         return jsonify(result), 200
     else:
         return jsonify(result), 400
+
+
+@app.route('/api/auth/wechat/authorize', methods=['POST'])
+def api_wechat_authorize():
+    """
+    @brief  处理微信注册授权请求
+    @retval JSON格式的授权结果
+    """
+    data = request.get_json() or {}
+    action = data.get('action', 'register')
+    
+    response = SocialLoginService.get_wechat_auth_response(action)
+    
+    if response['success']:
+        return jsonify(response), 200
+    else:
+        return jsonify(response), 400
+
+
+@app.route('/api/auth/qq/authorize', methods=['POST'])
+def api_qq_authorize():
+    """
+    @brief  处理QQ注册授权请求
+    @retval JSON格式的授权结果
+    """
+    data = request.get_json() or {}
+    action = data.get('action', 'register')
+    
+    response = SocialLoginService.get_qq_auth_response(action)
+    
+    if response['success']:
+        return jsonify(response), 200
+    else:
+        return jsonify(response), 400
+
+
+@app.route('/api/auth/social/config', methods=['GET'])
+def api_social_config():
+    """
+    @brief  获取第三方登录配置状态
+    @retval JSON格式的配置状态
+    """
+    status = SocialLoginService.get_config_status()
+    return jsonify({
+        'success': True,
+        'config': status
+    }), 200
+
+
+@app.route('/api/auth/social/status', methods=['GET'])
+def api_social_status():
+    """
+    @brief  检查社交登录状态
+    @retval JSON格式的状态信息
+    """
+    return jsonify({
+        'success': True,
+        'registered': False,
+        'message': '等待用户授权'
+    }), 200
+
+
+@app.route('/api/auth/wechat/callback', methods=['GET'])
+def api_wechat_callback():
+    """
+    @brief  微信授权回调处理
+    @retval 重定向或错误信息
+    """
+    code = request.args.get('code')
+    state = request.args.get('state', '')
+    
+    if not code:
+        return redirect('/register?message=微信授权失败')
+    
+    return redirect('/login?message=微信注册成功，请登录')
+
+
+@app.route('/api/auth/qq/callback', methods=['GET'])
+def api_qq_callback():
+    """
+    @brief  QQ授权回调处理
+    @retval 重定向或错误信息
+    """
+    code = request.args.get('code')
+    state = request.args.get('state', '')
+    
+    if not code:
+        return redirect('/register?message=QQ授权失败')
+    
+    return redirect('/login?message=QQ注册成功，请登录')
 
 
 @app.route('/api/auth/user-info', methods=['GET'])
