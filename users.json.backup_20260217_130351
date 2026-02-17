@@ -1,0 +1,11 @@
+{
+  "lihuashanlunjian": {
+    "email": "lihuashanlunjian@gmail.com",
+    "password": "fc2b37b1413f2d6721d2984bf97cfffa$4dafa314cd2cdd90bccada98c2727f7870c30a14b8bdc9db1b124922cf295280",
+    "created_at": "2026-02-17T12:38:09.907524",
+    "login_attempts": {
+      "count": 0,
+      "last_attempt": null
+    }
+  }
+}
