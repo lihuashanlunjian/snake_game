@@ -38,11 +38,87 @@ body {
     margin-bottom: 20px;
 }
 
+/* 头部顶部区域 */
+.header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
 /* 游戏标题 */
 .game-header h1 {
     font-size: 2.5rem;
-    margin-bottom: 15px;
+    margin-bottom: 0;
     text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+}
+
+/* 认证按钮容器 */
+.auth-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+/* 认证按钮 */
+.btn-auth {
+    padding: 8px 20px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* 登录按钮 */
+.btn-login {
+    background: transparent;
+    color: #00ff88;
+    border: 2px solid #00ff88;
+}
+
+.btn-login:hover {
+    background: rgba(0, 255, 136, 0.1);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 255, 136, 0.3);
+}
+
+/* 注册按钮 */
+.btn-register {
+    background: linear-gradient(135deg, #00ff88, #00cc6a);
+    color: #000;
+}
+
+.btn-register:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 255, 136, 0.4);
+}
+
+/* 用户欢迎信息 */
+.user-greeting {
+    color: #00ff88;
+    font-size: 0.95rem;
+    font-weight: 500;
+    padding: 8px 15px;
+    background: rgba(0, 255, 136, 0.1);
+    border-radius: 8px;
+    border: 1px solid rgba(0, 255, 136, 0.3);
+}
+
+/* 登出按钮 */
+.btn-logout {
+    background: transparent;
+    color: #ff6b6b;
+    border: 2px solid #ff6b6b;
+}
+
+.btn-logout:hover {
+    background: rgba(255, 107, 107, 0.1);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3);
 }
 
 /* 分数面板 */
@@ -421,8 +497,23 @@ body {
         padding: 10px;
     }
     
+    .header-top {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
     .game-header h1 {
         font-size: 1.8rem;
+    }
+    
+    .auth-buttons {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .btn-auth {
+        flex: 1;
+        text-align: center;
     }
     
     .score-board {
@@ -476,8 +567,17 @@ body {
 
 /* 手机设备适配 */
 @media (max-width: 480px) {
+    .header-top {
+        gap: 10px;
+    }
+    
     .game-header h1 {
         font-size: 1.5rem;
+    }
+    
+    .btn-auth {
+        padding: 6px 15px;
+        font-size: 0.85rem;
     }
     
     .score-board {

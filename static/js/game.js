@@ -11,6 +11,11 @@
 class SnakeGameClient {
     // 构造函数，初始化游戏客户端
     constructor() {
+        // 登录状态标志
+        this.isLoggedIn = false;
+        // 用户信息
+        this.userInfo = null;
+        
         // 获取Canvas画布元素
         this.canvas = document.getElementById('game-canvas');
         // 获取Canvas 2D绑图上下文
@@ -88,15 +93,90 @@ class SnakeGameClient {
     }
     
     // 初始化方法
-    init() {
+    async init() {
         // 设置Canvas画布尺寸
         this.setupCanvas();
         // 绑定事件监听器
         this.bindEvents();
+        // 检查登录状态
+        await this.checkAuthStatus();
         // 加载历史最高分
         this.loadHighScore();
         // 显示初始覆盖层提示
-        this.showOverlay('准备开始', '按"开始游戏"按钮或空格键开始');
+        this.updateOverlayByAuth();
+    }
+    
+    // 检查登录状态
+    async checkAuthStatus() {
+        try {
+            const response = await fetch('/api/auth/check');
+            const data = await response.json();
+            
+            this.isLoggedIn = data.logged_in;
+            this.userInfo = data.logged_in ? {
+                username: data.username,
+                email: data.email
+            } : null;
+            
+            this.updateUIByAuth();
+        } catch (error) {
+            console.error('检查登录状态失败:', error);
+            this.isLoggedIn = false;
+            this.userInfo = null;
+        }
+    }
+    
+    // 根据登录状态更新UI
+    updateUIByAuth() {
+        const authButtons = document.querySelector('.auth-buttons');
+        if (authButtons) {
+            if (this.isLoggedIn) {
+                authButtons.innerHTML = `
+                    <span class="user-greeting">欢迎, ${this.userInfo.username}</span>
+                    <button class="btn btn-auth btn-logout" id="btn-logout">登出</button>
+                `;
+                // 绑定登出按钮事件
+                document.getElementById('btn-logout').addEventListener('click', () => this.logout());
+            } else {
+                authButtons.innerHTML = `
+                    <a href="/login" class="btn btn-auth btn-login">登录</a>
+                    <a href="/register" class="btn btn-auth btn-register">注册</a>
+                `;
+            }
+        }
+    }
+    
+    // 根据登录状态更新覆盖层
+    updateOverlayByAuth() {
+        if (this.isLoggedIn) {
+            this.showOverlay('准备开始', '按"开始游戏"按钮或空格键开始');
+        } else {
+            this.showOverlay('请先登录', '登录后即可开始游戏');
+        }
+    }
+    
+    // 登出
+    async logout() {
+        try {
+            const response = await fetch('/api/auth/logout', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            
+            if (response.ok) {
+                this.isLoggedIn = false;
+                this.userInfo = null;
+                this.stopGameLoop();
+                this.gameState.game_state = 'idle';
+                this.updateUIByAuth();
+                this.updateOverlayByAuth();
+                this.clearCanvas();
+            }
+        } catch (error) {
+            console.error('登出失败:', error);
+        }
     }
     
     // 设置Canvas画布尺寸
@@ -205,11 +285,31 @@ class SnakeGameClient {
     
     // 异步方法：开始游戏
     async startGame() {
+        // 检查是否已登录
+        if (!this.isLoggedIn) {
+            this.showOverlay('请先登录', '登录后即可开始游戏');
+            // 延迟跳转到登录页面
+            setTimeout(() => {
+                window.location.href = '/login?message=请先登录后再开始游戏';
+            }, 1500);
+            return;
+        }
+        
         try {
             // 发送POST请求到开始游戏API
             const response = await fetch('/api/game/start', { method: 'POST' });
             // 解析JSON响应
             const data = await response.json();
+            
+            // 检查是否需要登录
+            if (response.status === 401 && data.need_login) {
+                this.isLoggedIn = false;
+                this.showOverlay('请先登录', '登录后即可开始游戏');
+                setTimeout(() => {
+                    window.location.href = '/login?message=请先登录后再开始游戏';
+                }, 1500);
+                return;
+            }
             
             // 如果请求成功
             if (data.status === 'success') {

@@ -62,6 +62,10 @@ logs/
 *.db
 *.sqlite3
 
+# User data (sensitive)
+users.json
+reset_tokens.json
+
 # OS
 Thumbs.db
 Desktop.ini
